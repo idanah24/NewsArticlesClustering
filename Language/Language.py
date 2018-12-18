@@ -1,21 +1,26 @@
+'''
+Created on Dec 7, 2018
+
+@author: Idan
+'''
+
+
 #    Language class    #
 # -*- coding: utf-8 -*-
-import urllib.request
-import urllib.parse
-import re
-from Article.Article import *
+import Article
 class Language:
     
-    def __init__(self, fileName):
-        self.name = fileName
+    def __init__(self, path):
+        self.path = path
         self.stopWords = []
         self.sources = []
         self.articles = []
         
         #Loading language from file
-        langFile = open("Language\\" + fileName + ".txt", "r")
+        langFile = open(path, "r")
             
         line = langFile.readline().rstrip()
+        
         if(line == "Stopwords{"):
             line = langFile.readline().rstrip()
             while(line != "}"):
@@ -27,23 +32,19 @@ class Language:
             while(line != "}"):
                 self.sources.append(line)              #Creating sources list
                 line = langFile.readline().rstrip()
-                
-        #Reading articles from web
-        for sourceName in self.sources:
-            link = 'http://newsapi.org/v2/top-headlines?sources={0}&apiKey=c351e7c333d74c3ca1d882732176a67e'.format(sourceName)
-            get = urllib.request.urlopen(link)     #Getting articles data
+        line = langFile.readline().rstrip()
+        if(line == "Articles{"):
+            line = langFile.readline().rstrip()
+            while(line != "}"):
+                self.articles.append(Article.Article(line, self.stopWords, True))       #Creating articles list
+                line = langFile.readline().rstrip()
 
-            data = get.read()
-            data = data.decode('UTF-8')
-
-            content = re.findall(r'{"source":(.*?)chars]"', data)
-
-            for article in content:             #Creating articles list
-                self.articles.append(Article(article))
-
+        langFile.close()
     
-    def getName(self):
-        return self.name
+    
+    #Class getters
+    def getPath(self):
+        return self.path
     def getStopWords(self):
         return self.stopWords
     def getSources(self):

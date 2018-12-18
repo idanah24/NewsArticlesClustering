@@ -1,31 +1,22 @@
 # -*- coding: utf-8 -*-
-import urllib.request
-import urllib.parse
-import re
-from Language.Language import *
-from Article.Article import *
+from NewsClusters import NewsClusters
+from Language import Language
+from Utilities import streamNews, addToDB
+from Evaluation import Evaluation
+
+    
+    
 
 
-lang = Language("English")
+lang = Language("C:\English.txt")
 
-art = lang.getArticles()
+#streamedNews = streamNews(lang)
+#addToDB(lang, streamedNews)
 
-for article in art:
-    print(article)
+articles = lang.getArticles()
 
-#for article in art:
-    #print(article)
+news = NewsClusters(articles, 9)
+news.printClusters()
 
-
-#tokenized = []
-#for article in articles:                #Creating tokenized articles
- #   tokenized.append(article.split())
-
-
-#Preprocessing
-#for i in range(len(tokenized)):
- #   tokenized[i] = list(filter(lambda x: (x.isalnum()), tokenized[i])) #Removing alphanumerical words
-  #  tokenized[i] = list(map(lambda x: x.lower(), tokenized[i]))         #Shifting all words to lower-case only
-   # tokenized[i] = list(filter(lambda x: x not in stopwords, tokenized[i]))     #Removing stopwords
-
-#print(tokenized)
+eval = Evaluation(news)
+eval.report()
