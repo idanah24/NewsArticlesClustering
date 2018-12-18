@@ -74,9 +74,10 @@ class NewsClusters:
             idf[word] = math.log10((len(articles)/(idf[word])))
             
         #Filtering out words with 0 tf-idf score
-        for word in idf:
-            if(idf[word] == 0):
-                idf.pop(word)
+        #TODO: Fix this part
+#        for word in idf:
+#            if(idf[word] == 0):
+#                idf.pop(word)
         return idf
     
     

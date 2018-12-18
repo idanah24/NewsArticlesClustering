@@ -15,10 +15,10 @@ class Article:
         
         #Reading from web api
         if(db == False):
-            self.title = Utilities.cutOutString("\"title\":\"", "\",\"description\"", data)
-            self.sourceName = Utilities.cutOutString(",\"name\":\"",  "\"},\"author\"", data)
-            self.url = Utilities.cutOutString(",\"url\":\"", "\",\"urlToImage", data)
-            self.content = self.title + Utilities.cutOutString(",\"description\":\"", "\",\"url", data) + Utilities.cutOutString(",\"content\":\"", "[+", data)
+            self.title = Utilities.cutOutString("\"title\":", "\",\"description\"", data)
+            self.sourceName = Utilities.cutOutString(",\"name\":",  "\"},\"author\"", data)
+            self.url = Utilities.cutOutString(",\"url\":", "\",\"urlToImage", data)
+            self.content = self.title + Utilities.cutOutString(",\"description\":", "\",\"url", data) + Utilities.cutOutString(",\"content\":", "}", data)
         
         #Reading from database
         else:
@@ -35,7 +35,7 @@ class Article:
         self.tokens = list(map(lambda x: x.lower(), self.tokens))           #Shifting all words to lower-case only
         self.tokens = list(filter(lambda x: x not in stopWords, self.tokens))   #Removing stopwords
        
-       
+        
 
     #This method counts occourances of a given word
     def countOccourance(self, word):

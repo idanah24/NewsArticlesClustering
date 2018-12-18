@@ -22,9 +22,11 @@ def streamNews(language):
         get = request.urlopen(link)     #Getting articles data
 
         data = get.read()
-        data = data.decode('UTF-8')
+        data = str(data, 'utf8')
 
-        content = re.findall(r'{"source":(.*?)chars]"', data)
+        content=data.split("\"source\"")[1:]
+        
+        #content = re.findall(r'{"source":(.*?)chars]"', data)
 
         for article in content:             #Creating articles list
             streamedNews.append(Article.Article(article, language.getStopWords(), False))
