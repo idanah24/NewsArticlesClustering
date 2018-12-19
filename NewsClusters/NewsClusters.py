@@ -72,12 +72,21 @@ class NewsClusters:
                 if(word in article.getTokens()):
                     idf[word] += 1
             idf[word] = math.log10((len(articles)/(idf[word])))
+        
+        #Finding average idf score    
+        avgScore = 0
+        for word in idf:
+            avgScore += idf[word]
+        avgScore = avgScore / len(idf)
+        
+        #Filtering out words with idf score below average
+        delWords = set()
+        for word in idf:
+            if idf[word] < (avgScore / 2):
+                delWords.add(word)
+        for word in delWords:
+            idf.pop(word)
             
-        #Filtering out words with 0 tf-idf score
-        #TODO: Fix this part
-#        for word in idf:
-#            if(idf[word] == 0):
-#                idf.pop(word)
         return idf
     
     

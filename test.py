@@ -9,12 +9,12 @@ lang = Language("C:\English.txt")
 #lang = Language("C:\Hebrew.txt")
 
 streamedNews = streamNews(lang)
-#addToDB(lang, streamedNews)
+addToDB(lang, streamedNews)
 
 articles = lang.getArticles()
 
 
-news = NewsClusters(streamedNews, 5)
+news = NewsClusters(articles, 8)
 news.printClusters()
 
 eval = Evaluation(news)

@@ -1,9 +1,12 @@
-36 articles were assigned to 5 different clusters
+48 articles were assigned to 8 different clusters
 Average similarities:
-Cluster #1: 25.87
-Cluster #2: 38.18
-Cluster #3: 54.04
-Cluster #4: 59.17
-Cluster #5: 46.32
-Average similarities for all clusters: 44.72
-Average dissimilarities between clusters: 95.96
+Cluster #1: 22.69
+Cluster #2: 72.82
+Cluster #3: 42.96
+Cluster #4: 62.48
+Cluster #5: 50.71
+Cluster #6: 100.00
+Cluster #7: 46.75
+Cluster #8: 70.53
+Average similarities for all clusters: 58.62
+Average dissimilarities between clusters: 98.19

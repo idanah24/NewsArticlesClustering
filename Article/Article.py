@@ -15,10 +15,10 @@ class Article:
         
         #Reading from web api
         if(db == False):
-            self.title = Utilities.cutOutString("\"title\":", "\",\"description\"", data)
+            self.title = Utilities.cutOutString("\"title\":\"", "\",\"description\"", data)
             self.sourceName = Utilities.cutOutString(",\"name\":",  "\"},\"author\"", data)
             self.url = Utilities.cutOutString(",\"url\":", "\",\"urlToImage", data)
-            self.content = self.title + Utilities.cutOutString(",\"description\":", "\",\"url", data) + Utilities.cutOutString(",\"content\":", "}", data)
+            self.content = self.title + " " + Utilities.cutOutString(",\"description\":", "\",\"url", data) + " " + Utilities.cutOutString(",\"content\":", "}", data)
         
         #Reading from database
         else:
