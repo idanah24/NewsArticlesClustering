@@ -162,7 +162,7 @@ class NewsClusters:
         for cluster in self.getClusters():
             print('Cluster #{0}'.format(i))
             for point in cluster:
-                print(point)
+                print(str(point))
             i += 1
             print()    
     

@@ -7,6 +7,7 @@ Created on Dec 7, 2018
 import Article
 from urllib import request 
 import re
+import math
 
 #This function cuts out a string between two given sub-strings
 def cutOutString(start, end, content):
@@ -100,5 +101,19 @@ def hasChanged(oldCentroids, newCentroids):
             return True
     return False
         
-            
+    
+def cosineSimilarity(vec1, vec2):
+    dotProduct = 0
+    len1 = 0
+    len2 = 0
+    for i in range(len(vec1)):
+        dotProduct += vec1[i] * vec2[i]
+        len1 += vec1[i] * vec1[i]
+        len2 += vec2[i] * vec2[i]
+    len1 = math.sqrt(len1)
+    len2 = math.sqrt(len2)
+    if (len1 == 0 or len2 == 0):
+        return 0
+    sim = (dotProduct)/(len1*len2)
+    return sim        
     

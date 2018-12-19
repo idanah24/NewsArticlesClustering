@@ -8,9 +8,12 @@ Created on Dec 7, 2018
 #    Language class    #
 # -*- coding: utf-8 -*-
 import Article
+import os
 class Language:
     
     def __init__(self, path):
+        
+        self.name = os.path.basename(path)
         self.path = path
         self.stopWords = []
         self.sources = []

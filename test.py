@@ -2,24 +2,23 @@
 from NewsClusters import NewsClusters
 from Language import Language
 from Utilities import streamNews, addToDB
-from Evaluation import Evaluation
+from Evaluation import Evaluation  
+import os
 
-    
+lang = Language("C:\English.txt")
+#lang = Language("C:\Hebrew.txt")
 
-#lang = Language("C:\English.txt")
-lang = Language("C:\Hebrew.txt")
-
-#streamedNews = streamNews(lang)
+streamedNews = streamNews(lang)
 #addToDB(lang, streamedNews)
 
 articles = lang.getArticles()
 
 
-news = NewsClusters(articles, 4)
+news = NewsClusters(streamedNews, 5)
 news.printClusters()
 
 eval = Evaluation(news)
-eval.report()
+eval.createResult()
 
 
 #TODO: 

@@ -6,7 +6,7 @@ from Evaluation import Evaluation
 
 
 #creates languages and store them in an array
-lang = [Language("English")]
+lang = [Language("C:\English.txt")]
 #lang+=[Language("Hebrow")]
 
 
