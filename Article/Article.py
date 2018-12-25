@@ -32,7 +32,7 @@ class Article:
         #Preprocessing article's content
         self.tokens = self.content.split()
         
-        if(db ==  True):
+        if(db ==  False):
             self.tokens = list(filter(lambda x: (x.isalnum()), self.tokens))    #Removing alphanumerical words
             self.tokens = list(map(lambda x: x.lower(), self.tokens))           #Shifting all words to lower-case only
             self.tokens = list(filter(lambda x: x not in stopWords, self.tokens))   #Removing stopwords

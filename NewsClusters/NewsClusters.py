@@ -185,3 +185,5 @@ class NewsClusters:
         return self.iterations
     def getPoints(self):
         return self.points
+    def getIDF(self):
+        return self.idf
