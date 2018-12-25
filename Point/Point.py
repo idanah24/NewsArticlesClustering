@@ -35,6 +35,8 @@ class Point:
         if (len1 == 0 or len2 == 0):
             return 0
         sim = (dotProduct)/(len1*len2)
+        if(sim < 0):
+            print(sim)
         return sim
     
     #This method creates and returns tf-idf vector for the current article
