@@ -5,6 +5,9 @@
 
 import Utilities
 import re
+import nltk
+from nltk.stem.porter import PorterStemmer
+from nltk.stem import WordNetLemmatizer
 
 #    Article Class    #
      
@@ -29,13 +32,28 @@ class Article:
             self.content = Utilities.cutOutString("content:", "(.)", data)
         
         
-        #Preprocessing article's content
-        self.tokens = self.content.split()
+
+        porter_stemmer = PorterStemmer()
+        wordnet_lemmatizer = WordNetLemmatizer()
+        # First Word tokenization
+        self.tokens = nltk.word_tokenize(self.content)
+        #Next find the roots of the word
+        for w in self.tokens:
+            #print("Before: {0}".format(w))
+            w = porter_stemmer.stem(w)
+            w = wordnet_lemmatizer.lemmatize(w)
+            #print("After: {0}".format(w))
+        self.tokens = list(filter(lambda x: x not in stopWords, self.tokens))
         
-        if(db ==  False):
-            self.tokens = list(filter(lambda x: (x.isalnum()), self.tokens))    #Removing alphanumerical words
-            self.tokens = list(map(lambda x: x.lower(), self.tokens))           #Shifting all words to lower-case only
-            self.tokens = list(filter(lambda x: x not in stopWords, self.tokens))   #Removing stopwords
+        
+        
+        #Preprocessing article's content
+        #self.tokens = self.content.split()
+        
+        #if(db ==  False):
+            #self.tokens = list(filter(lambda x: (x.isalnum()), self.tokens))    #Removing alphanumerical words
+            #self.tokens = list(map(lambda x: x.lower(), self.tokens))           #Shifting all words to lower-case only
+            #self.tokens = list(filter(lambda x: x not in stopWords, self.tokens))   #Removing stopwords
        
         
 

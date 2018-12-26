@@ -3,10 +3,11 @@ Created on Dec 7, 2018
 
 @author: Idan
 '''
+# -*- coding: utf-8 -*-
 #from Language import Language
 import Article
 from urllib import request 
-import re
+import json
 import math
 
 #This function cuts out a string between two given sub-strings
@@ -31,7 +32,30 @@ def streamNews(language):
 
         for article in content:             #Creating articles list
             streamedNews.append(Article.Article(article, language.getStopWords(), False))
-    return streamedNews        
+    return streamedNews  
+
+
+def otherStreamNews(language):
+    #streamedNews = []
+    for sourceName in language.getSources():
+        link = 'http://newsapi.org/v2/top-headlines?sources={0}&apiKey=c351e7c333d74c3ca1d882732176a67e'.format(sourceName)
+        get = request.urlopen(link)     #Getting articles data
+
+        data = json.loads(get.read().decode())
+        #title = data['title']
+        #print(data['articles'])
+        for article in data['articles']:
+            title = article['title']
+            source = article['source']['name']
+            url = article['url']
+            content = article['content']
+            #if content is not None:
+                #content.encode('utf8')
+                #content = str(content, 'utf8')
+            print("title: {0}\nsource: {1}\nurl: {2}\ncontent: {3}\n".format(title, source, url, content))
+        #for x in data:
+            #print(x)
+        #data = str(data, 'utf8')     
 
 #This function merges newly streamed news to news database
 def addToDB(language, streamedNews):
