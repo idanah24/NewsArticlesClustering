@@ -16,10 +16,6 @@ class Point:
         
     
         
-        
-        
-        
-        
     #This function calculates the cosine similarity between two given vectors
     def calcSimilarity(self, vec2):
         vec1 = self.getVector()

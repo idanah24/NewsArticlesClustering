@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?eclipse-pydev version="1.0"?><pydev_project>
-                
+                            
+    
+    
+    
     
     
     <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">Default</pydev_property>
-                
+                            
+    
+    
+    
     
     
     <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python interpreter</pydev_property>
-            
+                        
+    
+    
+    
     
     
     <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
@@ -16,10 +25,14 @@
         <path>/${PROJECT_DIR_NAME}/Language</path>
         <path>/${PROJECT_DIR_NAME}/NewsClusters</path>
         <path>/${PROJECT_DIR_NAME}/Utilities</path>
-        <path>/${PROJECT_DIR_NAME}/Point</path>
         <path>/${PROJECT_DIR_NAME}/Evaluation</path>
         <path>/${PROJECT_DIR_NAME}/SearchEngine</path>
+        <path>/${PROJECT_DIR_NAME}/NewsClusters/Point</path>
+        <path>/${PROJECT_DIR_NAME}/Point</path>
     </pydev_pathproperty>
-        
+                    
+
+
+
 
 </pydev_project>

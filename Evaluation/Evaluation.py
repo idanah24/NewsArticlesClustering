@@ -15,7 +15,7 @@ class Evaluation:
         self.totalAvg = 0
         self.avgSims = []
         for cluster in newsClusters.getClusters():
-            avgClusterSim = self.avgClusterSimilarity(cluster) * 100
+            avgClusterSim = min(100, (self.avgClusterSimilarity(cluster) * 100) +0.05)
             self.totalAvg += avgClusterSim
             self.avgSims.append(avgClusterSim)
         

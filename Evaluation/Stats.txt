@@ -1,9 +1,7 @@
-36 articles were assigned to 4 different clusters within 2 iterations
+35 articles were assigned to 2 different clusters within 2 iterations
 Average similarities:
-Cluster #1: 24.01 %
-Cluster #2: 40.28 %
-Cluster #3: 61.13 %
-Cluster #4: 41.38 %
-Average similarities for all clusters: 41.70 %
-Average dissimilarities between clusters: 93.52 %
+Cluster #1: 21.21 %
+Cluster #2: 42.71 %
+Average similarities for all clusters: 31.96 %
+Average dissimilarities between clusters: 91.36 %
  

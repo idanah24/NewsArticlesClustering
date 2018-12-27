@@ -4,10 +4,10 @@
 '''
 
 import Utilities
-import re
 import nltk
 from nltk.stem.porter import PorterStemmer
 from nltk.stem import WordNetLemmatizer
+import re
 
 #    Article Class    #
      
@@ -19,11 +19,34 @@ class Article:
         
         #Reading from web api
         if(db == False):
-            self.title = Utilities.cutOutString("\"title\":\"", "\",\"description\"", data)
-            self.sourceName = Utilities.cutOutString(",\"name\":",  "\"},\"author\"", data)
-            self.url = Utilities.cutOutString(",\"url\":", "\",\"urlToImage", data)
-            self.content = self.title + " " + Utilities.cutOutString(",\"description\":", "\",\"url", data) + " " + Utilities.cutOutString(",\"content\":", "}", data)
-        
+            self.title = data['title']
+            self.sourceName = data['source']['name']
+            self.url = data['url']
+            self.content = data['content']
+            
+            desc = data['description']
+            #In case article dosen't include content
+            if(self.title is None):
+                raise Exception()
+            if(self.content is None):
+                self.content = " "
+            if(desc is None):
+                desc = " "
+            
+                
+                
+            self.content = self.title + " " + desc + " " + self.content
+            
+            #TODO: Handle \n in self.content
+            #self.content.rstrip("\\r\\n")
+            
+            
+            
+            #re.sub(r'\r\n', '', self.content)
+
+            #print(self.content)
+            #print("End\n")
+            
         #Reading from database
         else:
             self.title  = Utilities.cutOutString("title:", ";sourceName:", data)
@@ -32,29 +55,26 @@ class Article:
             self.content = Utilities.cutOutString("content:", "(.)", data)
         
         
-
+        #Preprocessing article's content
+        self.tokens = []
         porter_stemmer = PorterStemmer()
         wordnet_lemmatizer = WordNetLemmatizer()
-        # First Word tokenization
-        self.tokens = nltk.word_tokenize(self.content)
-        #Next find the roots of the word
-        for w in self.tokens:
-            #print("Before: {0}".format(w))
-            w = porter_stemmer.stem(w)
-            w = wordnet_lemmatizer.lemmatize(w)
-            #print("After: {0}".format(w))
+        #Dividiing content to sentences
+        sentences = nltk.sent_tokenize(self.content)
+            
+        #Dividing each sentence to words
+        for sentence in sentences:
+            tokenized_sent = nltk.word_tokenize(sentence)
+            self.tokens = self.tokens + tokenized_sent
+        
+        #Stemming and lemmatizing each word
+        for word in self.tokens:
+            word = porter_stemmer.stem(word)
+            word = wordnet_lemmatizer.lemmatize(word)        
+        
+        self.tokens = list(map(lambda x: x.lower(), self.tokens))
         self.tokens = list(filter(lambda x: x not in stopWords, self.tokens))
-        
-        
-        
-        #Preprocessing article's content
-        #self.tokens = self.content.split()
-        
-        #if(db ==  False):
-            #self.tokens = list(filter(lambda x: (x.isalnum()), self.tokens))    #Removing alphanumerical words
-            #self.tokens = list(map(lambda x: x.lower(), self.tokens))           #Shifting all words to lower-case only
-            #self.tokens = list(filter(lambda x: x not in stopWords, self.tokens))   #Removing stopwords
-       
+        self.tokens = list(filter(lambda x: (x.isalnum()), self.tokens))
         
 
     #This method counts occourances of a given word

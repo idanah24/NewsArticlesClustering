@@ -23,39 +23,15 @@ def streamNews(language):
         link = 'http://newsapi.org/v2/top-headlines?sources={0}&apiKey=c351e7c333d74c3ca1d882732176a67e'.format(sourceName)
         get = request.urlopen(link)     #Getting articles data
 
-        data = get.read()
-        data = str(data, 'utf8')
+        content = json.loads(get.read().decode())
 
-        content=data.split("\"source\"")[1:]
-        
-        #content = re.findall(r'{"source":(.*?)chars]"', data)
-
-        for article in content:             #Creating articles list
-            streamedNews.append(Article.Article(article, language.getStopWords(), False))
-    return streamedNews  
-
-
-def otherStreamNews(language):
-    #streamedNews = []
-    for sourceName in language.getSources():
-        link = 'http://newsapi.org/v2/top-headlines?sources={0}&apiKey=c351e7c333d74c3ca1d882732176a67e'.format(sourceName)
-        get = request.urlopen(link)     #Getting articles data
-
-        data = json.loads(get.read().decode())
-        #title = data['title']
-        #print(data['articles'])
-        for article in data['articles']:
-            title = article['title']
-            source = article['source']['name']
-            url = article['url']
-            content = article['content']
-            #if content is not None:
-                #content.encode('utf8')
-                #content = str(content, 'utf8')
-            print("title: {0}\nsource: {1}\nurl: {2}\ncontent: {3}\n".format(title, source, url, content))
-        #for x in data:
-            #print(x)
-        #data = str(data, 'utf8')     
+        for article in content['articles']:             #Creating articles list
+            try:
+                art = Article.Article(article, language.getStopWords(), False)
+                streamedNews.append(art)
+            except:
+                pass
+    return streamedNews     
 
 #This function merges newly streamed news to news database
 def addToDB(language, streamedNews):
@@ -86,8 +62,6 @@ def writeToDB(path, newArticle):
     langFile.write("title:" + newArticle.getTitle() + ";sourceName:" + newArticle.getSourceName() + ";url:" + newArticle.getUrl() + ";content:" + newArticle.getContent() + "(.)\n}")
     langFile.close()
     
-    
-
 
 #This functions calculates a cluster's mean vector
 def getMeanVector(cluster, allWords):

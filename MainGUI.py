@@ -24,6 +24,9 @@ from Language import Language
 from Utilities import streamNews, addToDB
 from Evaluation import Evaluation  
 
+
+
+
 def loadGUI():
     window = Tk()
     
@@ -33,64 +36,97 @@ def loadGUI():
     return path
 
 
-
-
 #state: stream , addDB , cluster
 def Action(lang, numOfClusters,states):
     
     
-    
-    #num of stored articles 
-    numOfStoredArt = len(lang.articles)
-    if states[0] and states[1] and states[2]:
-        stream = streamNews(lang)
-        #TODO: Catch urllib exceptions
-        addToDB(lang, stream)
-        news = NewsClusters(lang.getArticles(), numOfStoredArt)
-        eval = Evaluation(news)
-        eval.createResult()
-        showMessage("{0} Articles were merged into database\nClustering completed!".format(len(stream)))
+    if states[0] and states[1] and states[2]:   #    111
 
-
-
-
-
-    #option to stream news for the choosen lang
-    #put streaming in a func
-    if numOfStoredArt == 0:
-        showMessage("No stored articles")
         
-    #complte the streaming procces
-    stream = lang.getArticles()
-    if states[0]:
-        stream = streamNews(pickedLang)
-        if states[1]:
-            addToDB(pickedLang,stream)
-    if states[2]:
-        if numOfStoredArt <numOfClusters or numOfStoredArt <1:
-            print("invalid input")
-            exit
+        if len(lang.getArticles()) == 0:
+            showMessage("No articles to cluster")
+        
+        elif numOfClusters < 2 or numOfClusters > len(lang.getArticles()) - 1:    #    K should be between 2 and n-1
+            showMessage("Wrong number of clusters")
             
-        news = NewsClusters(stream , numOfClusters)
-        news.printClusters()
-        eval = Evaluation(news)
-        eval.createResult()
+        else:
+            try:
+                stream = streamNews(lang)
+            except Exception() as e:
+                print(e)
+                showMessage("Error while streaming news")
+
+                try:
+                    addToDB(lang, stream)
+                except Exception() as e:
+                    print(e)
+                    showMessage("Error while adding to database")
+                
+            news = NewsClusters(lang.getArticles(), numOfClusters)
+            eval = Evaluation(news)
+            eval.createResult()
+            showMessage("Clustering completed")
+        
+        
+        
+    if states[0] and states[1] and not states[2]:   #    110
+        try:
+            stream = streamNews(lang)
+            addToDB(lang, stream)
+            showMessage("{0} articles were merged into database".format(len(stream)))
+        except Exception() as e:
+            print(e)
+            showMessage("Error while streaming/adding to database")
     
     
-
     
+    if states[0] and not states[1] and states[2]:       #    101
+        try:
+            stream = streamNews(lang)
+            if numOfClusters < 2 or numOfClusters > len(stream) - 1:
+                showMessage("Wrong number of clusters")
+            else:
+                news = NewsClusters(stream, numOfClusters)
+                eval = Evaluation(news)
+                eval.createResult()
+                showMessage("Clustering completed")
+        except Exception() as e:
+            print(e)
+            showMessage("Error while streaming news")
+            
+
+            
     
-
-
-
-
-
-
-
+    if states[0] and not states[1] and not states[2]:       #    100
+        showMessage("Please check add to database/cluster boxes")
+    
+    if not states[0] and states[1] and states[2]:       #    011
+        showMessage("Please check 'stream' box first")
+    
+    if not states[0] and states[1] and not states[2]:       #    010
+        showMessage("Please check 'stream' box first")
+    
+    if not states[0] and not states[1] and states[2]:       #    001
+        if numOfClusters < 2 or numOfClusters > len(lang.getArticles()) - 1:
+            showMessage("Wrong number of clusters")
+        else:
+            news = NewsClusters(lang.getArticles(), numOfClusters)
+            eval = Evaluation(news)
+            eval.createResult()
+            showMessage("Clustering completed")
+            
+    
+    if not states[0] and not states[1] and not states[2]:       #    000
+        showMessage("Please choose one of the options")
+    
 
 def tableGUI():
     langPath=loadGUI()
-    lang = Language(langPath)
+    try:
+        lang = Language(langPath)
+    except Exception:
+        showMessage("The Chosen file in not a language file , try again")
+        
     
     def submit():
         Action(lang, int(numOfCluster.get()),(stream.get(),addDB.get(),cluster.get()))
@@ -119,7 +155,7 @@ def tableGUI():
     Label(window, text="Number of clusters:").place(x=0, y=180, height=20, width=600)
 
     numOfCluster = Entry(window)
-    numOfCluster.insert(10,"1")
+    numOfCluster.insert(10,"2")
 
     numOfCluster.place(x=0, y=200, height=20, width=600)
 
@@ -132,10 +168,12 @@ def tableGUI():
 
 def showMessage(msg):
     window = Tk()
-    window.geometry("200x100")
     window.resizable(0, 0)
     window.title("Error")
-    mylabel = Label(window, text=msg)
-    mylabel.place(x=0, y=20, height=20, width=200)
-    Button(window, text='Quit', command=window.destroy).place(x=0, y=60, height=20, width=200)
+    Label(window, text="").grid()
+    mylabel = Label(window, text="  "+msg+"  ")
+    mylabel.grid()
+    Label(window, text="").grid()
+    Button(window, text='Quit', command=window.destroy).grid()
+    Label(window, text="").grid()
 tableGUI()

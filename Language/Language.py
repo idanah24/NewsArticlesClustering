@@ -44,7 +44,6 @@ class Language:
 
         langFile.close()
     
-    
     #Class getters
     def getPath(self):
         return self.path
